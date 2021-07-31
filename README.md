@@ -32,5 +32,19 @@
 IntelliJ 콘솔 로그 한글 깨짐 해결 방법
 - IntelliJ File Encodings 변경
 
-1.Ctrl + alt + S
-2.편집기 > 파일 인코딩설정
+1. Ctrl + alt + S
+2. Editor > File Encodings 선택
+3. 셋팅
+
+
+### lombok 설정
+
+1. Setting
+2. Annotation Processors
+3. Enable annotation processing 체크
+
+###그래들 빌드 셋팅
+
+Setting -> Build,Execution,Deployment -> Build Tools -> Gradle
+Build and run Using : IntelliJ IDEA 변경
+Run tests using : IntelliJ IDEA 변경
