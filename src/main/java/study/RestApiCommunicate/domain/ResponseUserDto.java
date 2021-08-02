@@ -15,6 +15,10 @@ public class ResponseUserDto<T> {
         this.statusCode = statusCode;
     }
 
+    public ResponseUserDto(T data) {
+        this.data = data;
+    }
+
     public ResponseUserDto(int statusCode, T data) {
         this.statusCode = statusCode;
         this.data = data;
