@@ -63,8 +63,9 @@ public class BindingAdvice {
     // 웹폴더안에있는 모든것들중에 이름이 Controller로 끝나는 모든것들 이라는뜻
     // 마지막*(..) 은 모든 인자들
     //이 validCheck은 아래 경로의 모든컨트롤러의 앞뒤로 실행된다!
-    @Around("execution(* study.RestApiCommunicate.web..*Controller.save(..))")
+    //@Around("execution(* study.RestApiCommunicate.web..*Controller.save(..))")
 //update 함수의 앞뒤를 제어해줄것 ,update 앞 뒤를제어 해야 리턴가능
+    @Around("@annotation(ValidCheck)")
     public Object validCheck(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         String type = proceedingJoinPoint.getSignature().getDeclaringTypeName();
         String method = proceedingJoinPoint.getSignature().getName();
