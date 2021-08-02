@@ -4,15 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import study.RestApiCommunicate.domain.RequestUserDto;
 import study.RestApiCommunicate.domain.ResponseUserDto;
 import study.RestApiCommunicate.entity.User;
 import study.RestApiCommunicate.repository.UserRepository;
 import study.RestApiCommunicate.service.UserService;
-
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,17 +41,32 @@ public class UserController {
 
     }
 
+  /*  @CrossOrigin
+    @PostMapping("/user")
+    //x-www-form-urlencoded => request.getParameter()
+    //text/plain => @RequestBody 어노테이션
+    //application/json => @RequestBody 어노테이션 + 오브젝트로 받기
+    public ResponseUserDto<?> save(@Valid @RequestBody RequestUserDto user, BindingResult result){
+        userRepository.save(user.toEntity());
+        return new ResponseUserDto<>(HttpStatus.CREATED.value(),userRepository.save(user.toEntity()));
+    }
+*/
     @CrossOrigin
     @PostMapping("/user")
     //x-www-form-urlencoded => request.getParameter()
     //text/plain => @RequestBody 어노테이션
     //application/json => @RequestBody 어노테이션 + 오브젝트로 받기
-    public ResponseUserDto<String> save(@RequestBody RequestUserDto user){
-        log.info("userData={}",user);
-        //return userRepository.save(user.toEntity());
-        return new ResponseUserDto<>(HttpStatus.CREATED.value(),"ok");
+    public ResponseEntity<ResponseUserDto<User>> save(@Valid @RequestBody RequestUserDto user, BindingResult result){
+        return new ResponseEntity<>(new ResponseUserDto(userRepository.save(user.toEntity())),HttpStatus.OK);
     }
 
+    @PutMapping("/user/{id}")
+    public ResponseUserDto<?> update(@PathVariable Long id, @Valid @RequestBody RequestUserDto user,BindingResult result){
+
+        userService.update(id, user);
+        return new ResponseUserDto<>(HttpStatus.OK.value(),userService.update(id,user));
+
+    }
     @DeleteMapping("/user/{id}")
     public ResponseUserDto<String> delete(@PathVariable Long id){
 
@@ -59,11 +74,5 @@ public class UserController {
         return new ResponseUserDto<>(HttpStatus.OK.value());
     }
 
-    @PutMapping("/user/{id}")
-    public ResponseUserDto<User> update(@PathVariable Long id,  @RequestBody RequestUserDto user){
-
-        return new ResponseUserDto<>(HttpStatus.OK.value(),userService.update(id,user));
-
-    }
 
 }
