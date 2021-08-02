@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import study.RestApiCommunicate.config.ValidCheck;
 import study.RestApiCommunicate.domain.RequestUserDto;
 import study.RestApiCommunicate.domain.ResponseUserDto;
 import study.RestApiCommunicate.entity.User;
@@ -56,11 +57,13 @@ public class UserController {
     //x-www-form-urlencoded => request.getParameter()
     //text/plain => @RequestBody 어노테이션
     //application/json => @RequestBody 어노테이션 + 오브젝트로 받기
-    public ResponseEntity<ResponseUserDto<User>> save(@Valid @RequestBody RequestUserDto user, BindingResult result){
-        return new ResponseEntity<>(new ResponseUserDto(userRepository.save(user.toEntity())),HttpStatus.OK);
+    @ValidCheck
+    public ResponseUserDto<User> save(@Valid @RequestBody RequestUserDto user, BindingResult result){
+        return new ResponseUserDto(HttpStatus.OK.value(),userRepository.save(user.toEntity()));
     }
 
     @PutMapping("/user/{id}")
+    @ValidCheck
     public ResponseUserDto<?> update(@PathVariable Long id, @Valid @RequestBody RequestUserDto user,BindingResult result){
 
         userService.update(id, user);
